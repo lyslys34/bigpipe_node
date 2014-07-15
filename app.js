@@ -89,6 +89,4 @@ resProto.pipePartial = function (name, view, options) {
   })
 }
 
-var server = app.listen(4000, function() {
-    debug('Express server listening on port 4000');
-  });
+var server = app.listen(4000);
