@@ -36,24 +36,26 @@ app.get('/', function (req, res) {
     });
 });
 
-var resProto = require('express/lib/response');
-
-resProto.pipe = function (selector, html, replace) {
-  this.write('<script>' + '$("' + selector + '").' + 
-    (replace === true ? 'replaceWith' : 'html') + 
-    '("' + html.replace(/"/g, '\\"').replace(/<\/script>/g, '<\\/script>') +
-    '")</script>');
+// Record pipe name in response object
+function PipeName (res, name) {
+    res.pipeCount = res.pipeCount || 0;
+    res.pipeMap = res.pipeMap || {};
+    if (res.pipeMap[name]) {return;}
+    res.pipeCount++;
+    res.pipeMap[name] = this.id = 
+      ['pipe', Math.random().toString().substring(2), (new Date()).valueOf()].join('_');
+    this.res = res;
+    this.name = name;
 };
 
-function PipeName (res, name) {
-  res.pipeCount = res.pipeCount || 0;
-  res.pipeMap = res.pipeMap || {};
-  if (res.pipeMap[name]) {return;}
-  res.pipeCount++;
-  res.pipeMap[name] = this.id = 
-    ['pipe', Math.random().toString().substring(2), (new Date()).valueOf()].join('_');
-  this.res = res;
-  this.name = name;
+var resProto = require('express/lib/response');
+
+//Use JQuery replaceWith to output the pipe content in response
+resProto.pipe = function (selector, html, replace) {
+    this.write('<script>' + '$("' + selector + '").' + 
+      (replace === true ? 'replaceWith' : 'html') + 
+      '("' + html.replace(/"/g, '\\"').replace(/<\/script>/g, '<\\/script>') +
+      '")</script>');
 };
 
 // Register pipe in response
