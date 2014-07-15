@@ -1,0 +1,11 @@
+{
+    "name": "node-bigpipe-experiment",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "express": "3.x.x",
+        "consolidate": "latest",
+        "jade": "latest",
+        "debug": "~0.7.4"
+    }
+}
