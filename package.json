@@ -6,6 +6,7 @@
         "express": "3.x.x",
         "consolidate": "latest",
         "jade": "latest",
-        "debug": "~0.7.4"
+        "debug": "~0.7.4",
+        "node-watch": "latest"
     }
 }
