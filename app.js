@@ -20,7 +20,7 @@ var getData = {
 
 // Because Bigpipe, it need to create related route rule to 
 // deceide which part use bigpipe and which not
-app.use('/static',express.static(path.join(__dirname, 'static')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
 app.get('/', function (req, res) {
     // register bigpipe module

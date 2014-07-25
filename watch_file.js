@@ -7,7 +7,14 @@ var express = require('express');
 var http = require('http');
 var app = express();
 
-var server = http.createServer(app);
+var server = null;
+
+function startServer() {
+  server = http.createServer(app);
+  server.listen(3000);
+}
+
+startServer();
 
 var sockets = [];
 server.on('connection', function (socket) {
@@ -24,14 +31,19 @@ function closeServer() {
     server.close(function () {
         console.info('close http server'); 
     });
+    delete server;
 }
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-server.listen(3000);
+
 
 app.use(function (req, res) {
+  var file = fs.readFileSync('config.js', 'utf-8');
+  console.info(typeof file);
+  var fileJSONString = JSON.stringify(file);
+  var fileObj = JSON.parse(fileJSONString);
   res.render('layout1',{
       s1: 'Hello',
       s2: 'world'
@@ -43,4 +55,5 @@ watch('config.js', function (filename) {
     var file = fs.readFileSync('config.js', 'utf-8');
     console.info('file: ', file);
     closeServer();
+    startServer();
 });
